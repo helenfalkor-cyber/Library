@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fast Fashion & Ethics — C1 Lesson</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1c1a18;
+    --paper: #f5f2ee;
+    --rule: #c4bdb2;
+    --accent: #2c5f4a;
+    --accent2: #8b3a2a;
+    --soft: #e6e0d8;
+    --answer-bg: #fdfcfa;
+    --correct: #2c5f4a;
+    --wrong: #8b3a2a;
+    --marker-bg: #eef3f0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #ddd8d0;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.13);
+    padding: 52px 60px 64px;
+  }
+
+  .master-header {
+    text-align: center;
+    border-bottom: 3px double var(--ink);
+    padding-bottom: 20px;
+    margin-bottom: 52px;
+  }
+
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 8px;
+  }
+
+  .master-header h1 {
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+  }
+
+  .master-header .sub {
+    font-size: 15px;
+    font-style: italic;
+    color: #777;
+    margin-top: 6px;
+  }
+
+  .section { margin-bottom: 56px; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 5px;
+  }
+
+  .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 8px;
+    margin-bottom: 4px;
+  }
+
+  .section-intro {
+    font-size: 15px;
+    font-style: italic;
+    color: #666;
+    margin: 10px 0 22px;
+    line-height: 1.7;
+  }
+
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 52px 0;
+  }
+
+  .rule-box {
+    background: var(--soft);
+    border-left: 3px solid var(--accent);
+    padding: 14px 20px;
+    margin-bottom: 28px;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .rule-box strong { color: var(--accent); font-weight: 600; }
+  .rule-box em { color: #555; }
+
+  .hook-card {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 32px 36px;
+    margin-bottom: 24px;
+  }
+
+  .hook-stat {
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    letter-spacing: -1px;
+  }
+
+  .hook-stat span {
+    font-size: 22px;
+    font-weight: 400;
+    display: block;
+    margin-top: 6px;
+    color: #ccc;
+    font-style: italic;
+    letter-spacing: 0;
+  }
+
+  .hook-source {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #666;
+    margin-top: 14px;
+  }
+
+  .hook-question {
+    font-size: 17px;
+    font-style: italic;
+    color: #555;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    line-height: 1.7;
+  }
+
+  .hook-input {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 16px;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--rule);
+    padding: 8px 2px;
+    width: 100%;
+    outline: none;
+    margin-top: 10px;
+    transition: border-color 0.2s;
+  }
+  .hook-input:focus { border-bottom-color: var(--accent); }
+
+  .contradiction-cards { display: flex; flex-direction: column; gap: 28px; }
+
+  .contra-card { border: 1px solid var(--rule); overflow: hidden; }
+
+  .contra-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .contra-body { display: grid; grid-template-columns: 1fr 1fr; }
+
+  .contra-col { padding: 18px 20px; }
+  .contra-col:first-child { border-right: 1px solid var(--rule); }
+
+  .contra-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 8px;
+  }
+
+  .contra-quote {
+    font-size: 15px;
+    line-height: 1.7;
+    font-style: italic;
+    color: var(--accent);
+    border-left: 2px solid var(--accent);
+    padding-left: 12px;
+  }
+
+  .contra-fact { font-size: 15px; line-height: 1.7; color: #333; }
+  .contra-fact strong { color: var(--accent2); }
+
+  .contra-input-wrap {
+    border-top: 1px solid var(--rule);
+    padding: 14px 20px;
+    background: var(--answer-bg);
+  }
+
+  .contra-input-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 8px;
+  }
+
+  .contra-input {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 16px;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--rule);
+    padding: 6px 2px;
+    width: 100%;
+    outline: none;
+    resize: none;
+    line-height: 1.6;
+    transition: border-color 0.2s;
+  }
+  .contra-input:focus { border-bottom-color: var(--accent); }
+
+  .cleft-items { display: flex; flex-direction: column; gap: 26px; margin-bottom: 16px; }
+  .cleft-item { display: flex; flex-direction: column; gap: 8px; }
+
+  .cleft-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 1px;
+  }
+
+  .cleft-original {
+    font-size: 16px;
+    line-height: 1.6;
+    padding: 10px 14px;
+    background: var(--answer-bg);
+    border: 1px solid var(--rule);
+    color: #444;
+    font-style: italic;
+  }
+
+  .cleft-prompt {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #999;
+  }
+
+  .cleft-input {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 16px;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--rule);
+    padding: 7px 2px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .cleft-input:focus { border-bottom-color: var(--accent); }
+
+  .cleft-feedback { font-size: 13px; font-style: italic; display: none; margin-top: 2px; }
+  .cleft-feedback.correct { color: var(--correct); display: block; }
+  .cleft-feedback.wrong { color: var(--wrong); display: block; }
+
+  .check-row { display: flex; align-items: center; gap: 16px; margin-top: 20px; }
+
+  .btn-check {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 12px 28px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-check:hover { background: var(--accent); }
+
+  .btn-reset {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: transparent;
+    color: #999;
+    border: 1px solid var(--rule);
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .btn-reset:hover { color: var(--ink); border-color: var(--ink); }
+
+  .score { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--accent); letter-spacing: 1px; display: none; }
+
+  .markers-bank { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+
+  .marker-chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 7px 14px;
+    background: var(--marker-bg);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .marker-chip:hover { background: var(--accent); color: white; }
+  .marker-chip.used { opacity: 0.35; pointer-events: none; text-decoration: line-through; }
+
+  .discourse-inputs { display: flex; flex-direction: column; gap: 18px; }
+  .disc-item { display: flex; flex-direction: column; gap: 5px; }
+
+  .disc-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #999;
+  }
+
+  .disc-sentence {
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: #333;
+    padding: 10px 14px;
+    background: var(--answer-bg);
+    border: 1px solid var(--rule);
+    margin-bottom: 4px;
+  }
+
+  .disc-sentence .gap {
+    display: inline-block;
+    min-width: 180px;
+    border-bottom: 2px solid var(--accent);
+    margin-right: 4px;
+  }
+
+  .disc-input {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 16px;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--rule);
+    padding: 6px 2px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .disc-input:focus { border-bottom-color: var(--accent); }
+
+  .disc-feedback { font-size: 13px; font-style: italic; display: none; margin-top: 2px; }
+  .disc-feedback.correct { color: var(--correct); display: block; }
+  .disc-feedback.wrong { color: var(--wrong); display: block; }
+
+  .hw-requirements {
+    background: var(--answer-bg);
+    border: 1px solid var(--rule);
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+  .hw-req-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 12px;
+  }
+  .hw-req-list { list-style: none; display: flex; flex-direction: column; gap: 8px; padding-left: 0; }
+  .hw-req-list li { font-size: 15px; line-height: 1.6; padding-left: 16px; position: relative; }
+  .hw-req-list li::before { content: '—'; position: absolute; left: 0; color: var(--accent); }
+
+  .hw-write-area { margin-bottom: 24px; }
+  .hw-write-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 8px;
+  }
+  .hw-textarea {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 16px;
+    color: var(--ink);
+    background: var(--answer-bg);
+    border: 1px solid var(--rule);
+    padding: 16px 18px;
+    width: 100%;
+    min-height: 260px;
+    outline: none;
+    resize: vertical;
+    line-height: 1.75;
+    transition: border-color 0.2s;
+  }
+  .hw-textarea:focus { border-color: var(--accent); }
+  .hw-meta { display: flex; gap: 16px; margin-top: 6px; }
+  .word-count { font-family: 'DM Mono', monospace; font-size: 11px; color: #999; }
+  .word-target { font-family: 'DM Mono', monospace; font-size: 11px; color: #999; }
+
+  .checklist-wrap { background: var(--answer-bg); border: 1px solid var(--rule); padding: 20px 24px; }
+  .checklist-title { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 4px; }
+  .checklist-intro { font-size: 14px; font-style: italic; color: #888; margin-bottom: 16px; }
+  .checklist-items { display: flex; flex-direction: column; gap: 10px; }
+  .check-item { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+  .check-item input { display: none; }
+  .check-box { width: 16px; height: 16px; border: 1.5px solid var(--rule); flex-shrink: 0; transition: all 0.15s; }
+  .check-item input:checked + .check-box { background: var(--accent); border-color: var(--accent); }
+  .check-text { font-size: 15px; line-height: 1.5; }
+  .checklist-result { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); margin-top: 14px; }
+
+  .footer {
+    margin-top: 40px;
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+  }
+  .footer span {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #bbb;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="master-header">
+    <div class="eyebrow">Fast Fashion & Ethics · C1</div>
+    <h1>The True Cost</h1>
+    <div class="sub">Cleft sentences · Discourse markers for argument</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Section 1</div>
+    <div class="section-title">Before We Start</div>
+    <div class="section-intro">Look at this figure for a moment. Then answer the question below it.</div>
+    <div class="hook-card">
+      <div class="hook-stat">$96 / month
+        <span>The minimum wage of a garment worker in Bangladesh — the country that makes clothes for H&M, Zara, and Primark.</span>
+      </div>
+      <div class="hook-source">Source: Global Living Wage Coalition · Wall Street Journal</div>
+    </div>
+    <div class="hook-question">The living wage for a family in Bangladesh is estimated at $403/month. The brands they sew for are worth billions. In one sentence — whose problem is this?</div>
+    <input class="hook-input" type="text" placeholder="Write your answer..." autocomplete="off"/>
+  </div>
+
+  <hr class="section-divider"/>
+
+  <div class="section">
+    <div class="section-label">Section 2</div>
+    <div class="section-title">Spot the Contradiction</div>
+    <div class="section-intro">Each card below shows a real public statement from a major fashion brand alongside a documented fact that contradicts it. For each pair: identify <em>exactly</em> what is contradicted, and write one sentence explaining how the brand is misrepresenting reality.</div>
+    <div class="contradiction-cards">
+      <div class="contra-card">
+        <div class="contra-header">Brand A — H&M</div>
+        <div class="contra-body">
+          <div class="contra-col">
+            <div class="contra-label">What the brand says</div>
+            <div class="contra-quote">"We are committed to making fashion sustainable and sustainability fashionable. Our goal is to use only recycled or sustainably sourced materials by 2030."</div>
+          </div>
+          <div class="contra-col">
+            <div class="contra-label">What the record shows</div>
+            <div class="contra-fact">H&M produces approximately <strong>3 billion garments per year</strong>. Its in-store recycling bins collect donated items, but customers who donate receive a coupon — incentivising them to buy more. Environmental scorecards on H&M's website have been found to include data described as "the exact opposite of reality."</div>
+          </div>
+        </div>
+        <div class="contra-input-wrap">
+          <div class="contra-input-label">What exactly is being contradicted — and how?</div>
+          <textarea class="contra-input" placeholder="The brand claims... however..." rows="2"></textarea>
+        </div>
+      </div>
+      <div class="contra-card">
+        <div class="contra-header">Brand B — Zara</div>
+        <div class="contra-body">
+          <div class="contra-col">
+            <div class="contra-label">What the brand says</div>
+            <div class="contra-quote">"We have a zero tolerance policy towards forced labour. We are committed to due diligence across our global supply chains."</div>
+          </div>
+          <div class="contra-col">
+            <div class="contra-label">What the record shows</div>
+            <div class="contra-fact">In 2011, Brazil's government filed <strong>52 charges</strong> against Zara's parent company Inditex after inspectors rescued workers from a São Paulo factory operating under slave-like conditions — one worker was fourteen years old.</div>
+          </div>
+        </div>
+        <div class="contra-input-wrap">
+          <div class="contra-input-label">What exactly is being contradicted — and how?</div>
+          <textarea class="contra-input" placeholder="The brand claims... however..." rows="2"></textarea>
+        </div>
+      </div>
+      <div class="contra-card">
+        <div class="contra-header">Brand C — Zara</div>
+        <div class="contra-body">
+          <div class="contra-col">
+            <div class="contra-label">What the brand says</div>
+            <div class="contra-quote">"Our Join Life collection represents our move towards a circular economy model and sustainable materials — extending the life cycle of our products."</div>
+          </div>
+          <div class="contra-col">
+            <div class="contra-label">What the record shows</div>
+            <div class="contra-fact">The Join Life label accounts for <strong>less than 5%</strong> of Zara's total production volume. Zara releases approximately 20 collections per year. Less than 1% of items dropped into its recycling bins is ever recycled into new fabric.</div>
+          </div>
+        </div>
+        <div class="contra-input-wrap">
+          <div class="contra-input-label">What exactly is being contradicted — and how?</div>
+          <textarea class="contra-input" placeholder="The brand claims... however..." rows="2"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider"/>
+
+  <div class="section">
+    <div class="section-label">Section 3</div>
+    <div class="section-title">Cleft Sentences</div>
+    <div class="rule-box">
+      Cleft sentences split one idea into two clauses to place emphasis on a specific element.<br>
+      <strong>It-cleft:</strong> <em>It is the consumer who drives demand.</em><br>
+      <strong>Wh-cleft:</strong> <em>What shocks most people is the scale of the waste.</em>
+    </div>
+    <div class="section-intro">Build a cleft sentence that emphasises the focus element shown.</div>
+    <div class="cleft-items">
+      <div class="cleft-item">
+        <div class="cleft-num">01</div>
+        <div class="cleft-original"><strong>Focus:</strong> the consumer, not the brand · <strong>Context:</strong> who ultimately has the power to end fast fashion</div>
+        <div class="cleft-prompt">Use an it-cleft</div>
+        <input class="cleft-input" id="cl1" placeholder="It is..." autocomplete="off" spellcheck="false"/>
+        <div class="cleft-feedback" id="clf1"></div>
+      </div>
+      <div class="cleft-item">
+        <div class="cleft-num">02</div>
+        <div class="cleft-original"><strong>Focus:</strong> the absence of transparency · <strong>Context:</strong> what makes holding brands accountable almost impossible</div>
+        <div class="cleft-prompt">Use a wh-cleft</div>
+        <input class="cleft-input" id="cl2" placeholder="What..." autocomplete="off" spellcheck="false"/>
+        <div class="cleft-feedback" id="clf2"></div>
+      </div>
+      <div class="cleft-item">
+        <div class="cleft-num">03</div>
+        <div class="cleft-original"><strong>Focus:</strong> the 2013 Rana Plaza collapse · <strong>Context:</strong> the event that forced global attention onto garment workers' conditions</div>
+        <div class="cleft-prompt">Use an it-cleft — past tense</div>
+        <input class="cleft-input" id="cl3" placeholder="It was..." autocomplete="off" spellcheck="false"/>
+        <div class="cleft-feedback" id="clf3"></div>
+      </div>
+      <div class="cleft-item">
+        <div class="cleft-num">04</div>
+        <div class="cleft-original"><strong>Focus:</strong> the recycling coupon scheme · <strong>Context:</strong> H&M's tactic that turns an environmental gesture into a purchase incentive</div>
+        <div class="cleft-prompt">Use a wh-cleft</div>
+        <input class="cleft-input" id="cl4" placeholder="What..." autocomplete="off" spellcheck="false"/>
+        <div class="cleft-feedback" id="clf4"></div>
+      </div>
+      <div class="cleft-item">
+        <div class="cleft-num">05</div>
+        <div class="cleft-original"><strong>Focus:</strong> binding legislation, not voluntary pledges · <strong>Context:</strong> what the fashion industry actually needs to change</div>
+        <div class="cleft-prompt">Your choice — justify it</div>
+        <input class="cleft-input" id="cl5" placeholder="It is... / What..." autocomplete="off" spellcheck="false"/>
+        <div class="cleft-feedback" id="clf5"></div>
+      </div>
+    </div>
+    <div class="check-row">
+      <button class="btn-check" onclick="checkClefts()">Check</button>
+      <button class="btn-reset" onclick="resetClefts()">Reset</button>
+      <div class="score" id="cleft-score"></div>
+    </div>
+  </div>
+
+  <hr class="section-divider"/>
+
+  <div class="section">
+    <div class="section-label">Section 4</div>
+    <div class="section-title">Discourse Markers for Argument</div>
+    <div class="rule-box">
+      <strong>Nevertheless / Nonetheless</strong> — contrast after conceding a point<br>
+      <strong>In contrast</strong> — direct opposition between two ideas<br>
+      <strong>By the same token</strong> — applying the same logic to a new point<br>
+      <strong>As a consequence</strong> — result of what was just stated<br>
+      <strong>What is more</strong> — adding a stronger or more surprising point<br>
+      <strong>It could be argued that</strong> — introducing a position with some distance
+    </div>
+    <div class="section-intro">Fill each gap with the most appropriate discourse marker. Each marker is used once.</div>
+    <div class="markers-bank" id="markers-bank">
+      <div class="marker-chip" onclick="selectMarker(this)">Nevertheless</div>
+      <div class="marker-chip" onclick="selectMarker(this)">In contrast</div>
+      <div class="marker-chip" onclick="selectMarker(this)">By the same token</div>
+      <div class="marker-chip" onclick="selectMarker(this)">As a consequence</div>
+      <div class="marker-chip" onclick="selectMarker(this)">What is more</div>
+      <div class="marker-chip" onclick="selectMarker(this)">It could be argued that</div>
+    </div>
+    <div class="discourse-inputs">
+      <div class="disc-item">
+        <div class="disc-label">Gap 1</div>
+        <div class="disc-sentence">Fast fashion brands argue that affordable clothing democratises style. <span class="gap"></span>, the true cost is paid not by the consumer, but by the factory worker earning $96 a month.</div>
+        <input class="disc-input" id="d1" placeholder="Type the marker..." autocomplete="off" spellcheck="false"/>
+        <div class="disc-feedback" id="df1"></div>
+      </div>
+      <div class="disc-item">
+        <div class="disc-label">Gap 2</div>
+        <div class="disc-sentence">Brands such as Patagonia have demonstrated that a profitable business can coexist with ethical supply chains. <span class="gap"></span>, SHEIN adds over 6,000 new products daily while publicly disclosing almost nothing about its labour conditions.</div>
+        <input class="disc-input" id="d2" placeholder="Type the marker..." autocomplete="off" spellcheck="false"/>
+        <div class="disc-feedback" id="df2"></div>
+      </div>
+      <div class="disc-item">
+        <div class="disc-label">Gap 3</div>
+        <div class="disc-sentence">If consumers demand transparency, brands will be forced to open their supply chains to scrutiny. <span class="gap"></span>, if consumers continue to reward opacity with purchases, there is no commercial incentive for change.</div>
+        <input class="disc-input" id="d3" placeholder="Type the marker..." autocomplete="off" spellcheck="false"/>
+        <div class="disc-feedback" id="df3"></div>
+      </div>
+      <div class="disc-item">
+        <div class="disc-label">Gap 4</div>
+        <div class="disc-sentence">The fashion industry produces 92 million tonnes of textile waste annually. <span class="gap"></span>, each laundry cycle of a synthetic garment releases up to 700,000 microplastic fibres into water systems.</div>
+        <input class="disc-input" id="d4" placeholder="Type the marker..." autocomplete="off" spellcheck="false"/>
+        <div class="disc-feedback" id="df4"></div>
+      </div>
+      <div class="disc-item">
+        <div class="disc-label">Gap 5</div>
+        <div class="disc-sentence">Governments have largely failed to introduce binding legislation on fashion industry emissions. <span class="gap"></span>, voluntary corporate pledges have done little to shift the industry's fundamental practices.</div>
+        <input class="disc-input" id="d5" placeholder="Type the marker..." autocomplete="off" spellcheck="false"/>
+        <div class="disc-feedback" id="df5"></div>
+      </div>
+      <div class="disc-item">
+        <div class="disc-label">Gap 6</div>
+        <div class="disc-sentence"><span class="gap"></span> holding individual consumers responsible for systemic failures deflects attention from the structural conditions that make exploitation possible in the first place.</div>
+        <input class="disc-input" id="d6" placeholder="Type the marker..." autocomplete="off" spellcheck="false"/>
+        <div class="disc-feedback" id="df6"></div>
+      </div>
+    </div>
+    <div class="check-row">
+      <button class="btn-check" onclick="checkDiscourse()">Check</button>
+      <button class="btn-reset" onclick="resetDiscourse()">Reset</button>
+      <div class="score" id="disc-score"></div>
+    </div>
+  </div>
+
+  <hr class="section-divider"/>
+
+  <div class="section">
+    <div class="section-label">Homework</div>
+    <div class="section-title">Magazine Article</div>
+    <div class="rule-box">
+      <strong>Your publication:</strong> <em>Consume</em> — a quarterly magazine for people who think critically about the things they buy, wear and discard.<br><br>
+      <strong>Brief:</strong> <em>"We want a short, sharp piece on fast fashion's sustainability claims. Don't summarise the problem. Make an argument. Take a side. Surprise us."</em>
+    </div>
+    <div class="section-intro">Write your article — <strong>250–300 words</strong>. You are not writing a balanced essay. You are writing a piece with a point of view.</div>
+    <div class="hw-requirements">
+      <div class="hw-req-title">Your article must include</div>
+      <ul class="hw-req-list">
+        <li>A <strong>title</strong> and a one-line <strong>standfirst</strong></li>
+        <li>An opening that is <strong>not a statistic</strong></li>
+        <li>One <strong>central argument</strong>, sustained throughout</li>
+        <li>At least <strong>two cleft sentences</strong></li>
+        <li>At least <strong>two discourse markers</strong> from today</li>
+        <li>A final sentence your reader <strong>will remember</strong></li>
+      </ul>
+    </div>
+    <div class="hw-write-area">
+      <div class="hw-write-label">Your article</div>
+      <textarea class="hw-textarea" id="hw-article" placeholder="Title&#10;Standfirst&#10;&#10;Begin your article here..." oninput="updateWordCount()"></textarea>
+      <div class="hw-meta">
+        <div class="word-count" id="word-count">0 words</div>
+        <div class="word-target" id="word-target"></div>
+      </div>
+    </div>
+    <div class="checklist-wrap">
+      <div class="checklist-title">Self-assessment checklist</div>
+      <div class="checklist-intro">Before you submit — tick each box honestly.</div>
+      <div class="checklist-items">
+        <label class="check-item"><input type="checkbox" onchange="updateChecklist()"/><span class="check-box"></span><span class="check-text">My article has a title and a standfirst</span></label>
+        <label class="check-item"><input type="checkbox" onchange="updateChecklist()"/><span class="check-box"></span><span class="check-text">My opening is not a statistic</span></label>
+        <label class="check-item"><input type="checkbox" onchange="updateChecklist()"/><span class="check-box"></span><span class="check-text">I have one clear central argument</span></label>
+        <label class="check-item"><input type="checkbox" onchange="updateChecklist()"/><span class="check-box"></span><span class="check-text">I have used at least two cleft sentences correctly</span></label>
+        <label class="check-item"><input type="checkbox" onchange="updateChecklist()"/><span class="check-box"></span><span class="check-text">I have used at least two discourse markers</span></label>
+        <label class="check-item"><input type="checkbox" onchange="updateChecklist()"/><span class="check-box"></span><span class="check-text">My final sentence is memorable</span></label>
+        <label class="check-item"><input type="checkbox" onchange="updateChecklist()"/><span class="check-box"></span><span class="check-text">My word count is between 250 and 300 words</span></label>
+      </div>
+      <div class="checklist-result" id="checklist-result"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>The True Cost · Fast Fashion & Ethics</span>
+    <span>C1 · Cleft Sentences & Discourse Markers</span>
+  </div>
+
+</div>
+<script>
+function normalize(str) {
+  return str.toLowerCase().trim().replace(/[.,!?]/g, '').replace(/\s+/g, ' ');
+}
+const cleftStructures = {
+  cl1: { required: ["it is", "it's"], hint: "Start with 'It is...' and include 'who' to identify the agent." },
+  cl2: { required: ["what"], hint: "Start with 'What...' and build to '...is the absence of transparency' or similar." },
+  cl3: { required: ["it was", "rana plaza"], hint: "Start with 'It was the Rana Plaza collapse that...'" },
+  cl4: { required: ["what"], hint: "Start with 'What...' and describe the coupon scheme." },
+  cl5: { required: ["it is", "it's", "what"], hint: "Either structure works — make sure your emphasis is clear." }
+};
+function checkClefts() {
+  let correct = 0;
+  for (let i = 1; i <= 5; i++) {
+    const input = document.getElementById('cl' + i);
+    const fb = document.getElementById('clf' + i);
+    const val = normalize(input.value);
+    const structure = cleftStructures['cl' + i];
+    const hasStructure = structure.required.some(r => val.startsWith(normalize(r)));
+    const hasContent = val.length > 20;
+    if (hasStructure && hasContent) {
+      fb.textContent = '✓ Good structure. Check with your teacher for fine-tuning.';
+      fb.className = 'cleft-feedback correct';
+      input.style.borderBottomColor = '#2c5f4a';
+      correct++;
+    } else if (val.length > 0) {
+      fb.innerHTML = '✗ ' + structure.hint;
+      fb.className = 'cleft-feedback wrong';
+      input.style.borderBottomColor = '#8b3a2a';
+    } else {
+      fb.className = 'cleft-feedback';
+      fb.style.display = 'none';
+    }
+  }
+  const s = document.getElementById('cleft-score');
+  s.style.display = 'block';
+  s.textContent = correct + ' / 5 attempted correctly';
+}
+function resetClefts() {
+  for (let i = 1; i <= 5; i++) {
+    const input = document.getElementById('cl' + i);
+    const fb = document.getElementById('clf' + i);
+    input.value = '';
+    fb.className = 'cleft-feedback';
+    fb.style.display = 'none';
+    input.style.borderBottomColor = '';
+  }
+  document.getElementById('cleft-score').style.display = 'none';
+}
+const discAnswers = {
+  d1: ["nevertheless", "nonetheless"],
+  d2: ["in contrast"],
+  d3: ["by the same token"],
+  d4: ["what is more"],
+  d5: ["as a consequence"],
+  d6: ["it could be argued that"]
+};
+const discModel = {
+  d1: "Nevertheless", d2: "In contrast", d3: "By the same token",
+  d4: "What is more", d5: "As a consequence", d6: "It could be argued that"
+};
+let selectedMarker = null;
+function selectMarker(chip) {
+  document.querySelectorAll('.marker-chip').forEach(c => c.style.outline = '');
+  selectedMarker = chip.textContent.trim();
+  chip.style.outline = '2px solid #2c5f4a';
+}
+function checkDiscourse() {
+  let correct = 0;
+  for (let i = 1; i <= 6; i++) {
+    const input = document.getElementById('d' + i);
+    const fb = document.getElementById('df' + i);
+    const val = normalize(input.value);
+    const accepted = discAnswers['d' + i];
+    const isCorrect = accepted.some(a => val === normalize(a));
+    if (isCorrect) {
+      fb.textContent = '✓ Correct';
+      fb.className = 'disc-feedback correct';
+      input.style.borderBottomColor = '#2c5f4a';
+      correct++;
+      document.querySelectorAll('.marker-chip').forEach(c => {
+        if (normalize(c.textContent) === normalize(discModel['d' + i])) c.classList.add('used');
+      });
+    } else if (val.length > 0) {
+      fb.innerHTML = '✗ Not quite. The answer is: <em>' + discModel['d' + i] + '</em>';
+      fb.className = 'disc-feedback wrong';
+      input.style.borderBottomColor = '#8b3a2a';
+    } else {
+      fb.className = 'disc-feedback';
+      fb.style.display = 'none';
+    }
+  }
+  const s = document.getElementById('disc-score');
+  s.style.display = 'block';
+  s.textContent = correct + ' / 6 correct';
+}
+function resetDiscourse() {
+  for (let i = 1; i <= 6; i++) {
+    const input = document.getElementById('d' + i);
+    const fb = document.getElementById('df' + i);
+    input.value = '';
+    fb.className = 'disc-feedback';
+    fb.style.display = 'none';
+    input.style.borderBottomColor = '';
+  }
+  document.querySelectorAll('.marker-chip').forEach(c => { c.classList.remove('used'); c.style.outline = ''; });
+  document.getElementById('disc-score').style.display = 'none';
+  selectedMarker = null;
+}
+function updateWordCount() {
+  const text = document.getElementById('hw-article').value.trim();
+  const words = text === '' ? 0 : text.split(/\s+/).length;
+  const counter = document.getElementById('word-count');
+  const target = document.getElementById('word-target');
+  counter.textContent = words + ' words';
+  if (words < 250) { counter.style.color = '#999'; target.textContent = (250 - words) + ' more to reach minimum'; }
+  else if (words <= 300) { counter.style.color = '#2c5f4a'; target.textContent = '✓ Within range'; }
+  else { counter.style.color = '#8b3a2a'; target.textContent = (words - 300) + ' over the limit'; }
+}
+function updateChecklist() {
+  const boxes = document.querySelectorAll('.check-item input[type="checkbox"]');
+  const checked = Array.from(boxes).filter(b => b.checked).length;
+  const result = document.getElementById('checklist-result');
+  result.textContent = checked === boxes.length ? '✓ All boxes ticked — ready to submit.' : checked + ' / ' + boxes.length + ' complete';
+}
+</script>
+</body>
+</html>
