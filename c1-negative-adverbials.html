@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Language in Focus — Negative & Limiting Adverbials</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1c1a18;
+    --paper: #f7f3ec;
+    --rule: #c9bfae;
+    --accent: #b03a2e;
+    --soft: #e8e0d4;
+    --answer-bg: #fffdf8;
+    --correct: #2e7d32;
+    --wrong: #b03a2e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #e8e2d9; font-family: 'Cormorant Garamond', Georgia, serif; color: var(--ink); min-height: 100vh; padding: 40px 20px; }
+  .page { max-width: 780px; margin: 0 auto; background: var(--paper); border: 1px solid var(--rule); box-shadow: 0 8px 40px rgba(0,0,0,0.15); padding: 52px 60px 60px; }
+  .header { border-bottom: 3px double var(--ink); padding-bottom: 18px; margin-bottom: 32px; }
+  .lesson-tag { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  .title { font-size: 32px; font-weight: 700; line-height: 1.1; letter-spacing: -0.5px; }
+  .subtitle { font-size: 15px; font-style: italic; color: #666; margin-top: 6px; }
+  .rule-box { background: var(--soft); border-left: 3px solid var(--accent); padding: 16px 20px; margin-bottom: 36px; font-size: 15px; line-height: 1.7; }
+  .rule-box strong { font-weight: 600; color: var(--accent); }
+  .instruction { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #888; margin-bottom: 24px; padding-bottom: 10px; border-bottom: 1px solid var(--rule); }
+  .sentences { display: flex; flex-direction: column; gap: 28px; margin-bottom: 44px; }
+  .item { position: relative; }
+  .item-num { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: 1px; margin-bottom: 6px; text-transform: uppercase; }
+  .sentence { font-size: 17px; line-height: 1.6; color: var(--ink); margin-bottom: 10px; padding: 10px 14px; background: var(--answer-bg); border: 1px solid var(--rule); border-radius: 2px; }
+  .error { color: var(--wrong); text-decoration: underline; text-decoration-style: wavy; cursor: help; }
+  .fields { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .field-group { display: flex; flex-direction: column; gap: 4px; }
+  .field-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #999; }
+  .field-group input, .field-group textarea { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 15px; color: var(--ink); background: transparent; border: none; border-bottom: 1.5px solid var(--rule); padding: 6px 2px; width: 100%; outline: none; transition: border-color 0.2s; resize: none; }
+  .field-group input:focus, .field-group textarea:focus { border-bottom-color: var(--accent); }
+  .field-group textarea { min-height: 52px; line-height: 1.5; }
+  .section-divider { border: none; border-top: 1px solid var(--rule); margin: 40px 0 32px; }
+  .production-title { font-size: 20px; font-weight: 600; margin-bottom: 6px; }
+  .production-sub { font-size: 14px; font-style: italic; color: #777; margin-bottom: 24px; }
+  .production-items { display: flex; flex-direction: column; gap: 20px; }
+  .prod-item { display: flex; flex-direction: column; gap: 6px; }
+  .prod-prompt { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; color: var(--accent); text-transform: uppercase; }
+  .prod-item textarea { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 16px; color: var(--ink); background: transparent; border: none; border-bottom: 1.5px solid var(--rule); padding: 8px 2px; width: 100%; outline: none; resize: none; min-height: 44px; line-height: 1.6; transition: border-color 0.2s; }
+  .prod-item textarea:focus { border-bottom-color: var(--accent); }
+  .check-row { margin-top: 40px; display: flex; align-items: center; gap: 16px; }
+  .btn-check { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; background: var(--ink); color: var(--paper); border: none; padding: 12px 28px; cursor: pointer; transition: background 0.2s; }
+  .btn-check:hover { background: var(--accent); }
+  .btn-reset { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; background: transparent; color: #999; border: 1px solid var(--rule); padding: 12px 20px; cursor: pointer; transition: color 0.2s, border-color 0.2s; }
+  .btn-reset:hover { color: var(--ink); border-color: var(--ink); }
+  .score { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--accent); letter-spacing: 1px; display: none; }
+  .feedback { margin-top: 8px; font-size: 13px; font-style: italic; display: none; }
+  .feedback.correct { color: var(--correct); }
+  .feedback.wrong { color: var(--wrong); }
+  .footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; }
+  .footer-left, .footer-right { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #bbb; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="title">Negative & Limiting Adverbials</div>
+    <div class="subtitle">Inversion for emphasis — travel & consumer rights</div>
+  </div>
+  <div class="rule-box">
+    When a sentence begins with a <strong>negative or limiting adverbial</strong> (Never, Little, Not until, Not only, Only when, No way), the auxiliary verb <strong>inverts with the subject</strong>.<br>
+    e.g. <em>Never <strong>had</strong> I imagined this could happen.</em> &nbsp;·&nbsp; <em>Only when the results arrived <strong>did</strong> I realise...</em>
+  </div>
+  <div class="instruction">Part A — Find & correct the mistakes. Then describe the consumer rights situation.</div>
+  <div class="sentences">
+    <div class="item">
+      <div class="item-num">Sentence 01</div>
+      <div class="sentence">Never <span class="error" title="word order error">travelers have been</span> left so exposed as when Thomas Cook collapsed overnight.</div>
+      <div class="fields">
+        <div class="field-group">
+          <div class="field-label">Corrected sentence</div>
+          <input type="text" id="ans1" placeholder="Never ..." autocomplete="off" spellcheck="false"/>
+        </div>
+      </div>
+      <div class="feedback" id="fb1"></div>
+    </div>
+    <div class="item">
+      <div class="item-num">Sentence 02</div>
+      <div class="sentence">Not until they arrived at the airport did the tourists <span class="error" title="verb form error">realized</span> their flights had been cancelled.</div>
+      <div class="fields">
+        <div class="field-group">
+          <div class="field-label">Corrected sentence</div>
+          <input type="text" id="ans2" placeholder="Not until ..." autocomplete="off" spellcheck="false"/>
+        </div>
+      </div>
+      <div class="feedback" id="fb2"></div>
+    </div>
+    <div class="item">
+      <div class="item-num">Sentence 03</div>
+      <div class="sentence">Little did the passengers <span class="error" title="verb form error">knew</span> that the hotel had never received a single payment.</div>
+      <div class="fields">
+        <div class="field-group">
+          <div class="field-label">Corrected sentence</div>
+          <input type="text" id="ans3" placeholder="Little did ..." autocomplete="off" spellcheck="false"/>
+        </div>
+      </div>
+      <div class="feedback" id="fb3"></div>
+    </div>
+    <div class="item">
+      <div class="item-num">Sentence 04</div>
+      <div class="sentence">Not only <span class="error" title="missing inversion">the tour operator failed</span> to warn customers, it was still selling holidays the week before.</div>
+      <div class="fields">
+        <div class="field-group">
+          <div class="field-label">Corrected sentence</div>
+          <input type="text" id="ans4" placeholder="Not only did ..." autocomplete="off" spellcheck="false"/>
+        </div>
+      </div>
+      <div class="feedback" id="fb4"></div>
+    </div>
+    <div class="item">
+      <div class="item-num">Sentence 05</div>
+      <div class="sentence">Only when you book a package holiday <span class="error" title="missing inversion">you are</span> fully protected by law if the operator collapses.</div>
+      <div class="fields">
+        <div class="field-group">
+          <div class="field-label">Corrected sentence</div>
+          <input type="text" id="ans5" placeholder="Only when ..." autocomplete="off" spellcheck="false"/>
+        </div>
+      </div>
+      <div class="feedback" id="fb5"></div>
+    </div>
+    <div class="item">
+      <div class="item-num">Sentence 06</div>
+      <div class="sentence">No way would a standard travel insurance policy <span class="error" title="verb form error">covers</span> bankruptcy unless you have a specific clause.</div>
+      <div class="fields">
+        <div class="field-group">
+          <div class="field-label">Corrected sentence</div>
+          <input type="text" id="ans6" placeholder="No way would ..." autocomplete="off" spellcheck="false"/>
+        </div>
+      </div>
+      <div class="feedback" id="fb6"></div>
+    </div>
+  </div>
+  <div class="check-row">
+    <button class="btn-check" onclick="checkAnswers()">Check</button>
+    <button class="btn-reset" onclick="resetAll()">Reset</button>
+    <div class="score" id="score"></div>
+  </div>
+  <div class="footer">
+    <div class="footer-left">Travel Times · Consumer Rights Unit</div>
+    <div class="footer-right">C1 · Negative & Limiting Adverbials</div>
+  </div>
+</div>
+<script>
+const answers = {
+  ans1: ["never have travelers been", "never have travellers been"],
+  ans2: ["not until they arrived at the airport did the tourists realize", "not until they arrived at the airport did the tourists realise"],
+  ans3: ["little did the passengers know"],
+  ans4: ["not only did the tour operator fail", "not only had the tour operator failed"],
+  ans5: ["only when you book a package holiday are you", "only when you book a package holiday will you be"],
+  ans6: ["no way would a standard travel insurance policy cover"]
+};
+const modelAnswers = {
+  ans1: "Never have travellers been left so exposed as when Thomas Cook collapsed overnight.",
+  ans2: "Not until they arrived at the airport did the tourists realise their flights had been cancelled.",
+  ans3: "Little did the passengers know that the hotel had never received a single payment.",
+  ans4: "Not only did the tour operator fail to warn customers, it was still selling holidays the week before.",
+  ans5: "Only when you book a package holiday are you fully protected by law if the operator collapses.",
+  ans6: "No way would a standard travel insurance policy cover bankruptcy unless you have a specific clause."
+};
+function normalize(str) { return str.toLowerCase().trim().replace(/[.,!?]/g, '').replace(/\s+/g, ' '); }
+function checkAnswers() {
+  let correct = 0;
+  for (let i = 1; i <= 6; i++) {
+    const input = document.getElementById('ans' + i);
+    const fb = document.getElementById('fb' + i);
+    const val = normalize(input.value);
+    const accepted = answers['ans' + i];
+    const isCorrect = accepted.some(a => val.includes(normalize(a)));
+    fb.style.display = 'block';
+    if (isCorrect) {
+      fb.textContent = '✓ Correct';
+      fb.className = 'feedback correct';
+      input.style.borderBottomColor = '#2e7d32';
+      correct++;
+    } else if (val.length > 0) {
+      fb.innerHTML = '✗ Check the inversion and verb form again. <br><em>Model: ' + modelAnswers['ans' + i] + '</em>';
+      fb.className = 'feedback wrong';
+      input.style.borderBottomColor = '#b03a2e';
+    } else {
+      fb.textContent = '— No answer yet.';
+      fb.className = 'feedback';
+      fb.style.color = '#aaa';
+    }
+  }
+  const scoreEl = document.getElementById('score');
+  scoreEl.style.display = 'block';
+  scoreEl.textContent = correct + ' / 6 correct';
+}
+function resetAll() {
+  for (let i = 1; i <= 6; i++) {
+    const input = document.getElementById('ans' + i);
+    const fb = document.getElementById('fb' + i);
+    input.value = '';
+    fb.style.display = 'none';
+    input.style.borderBottomColor = '';
+  }
+  document.getElementById('score').style.display = 'none';
+}
+</script>
+</body>
+</html>
