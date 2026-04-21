@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teacher View — Power Lesson</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #1a2540; font-family: 'Cormorant Garamond', Georgia, serif; padding: 40px 20px; }
+  .page { max-width: 820px; margin: 0 auto; background: #f7f3ec; border: 1px solid #c9bfae; padding: 48px 56px 56px; box-shadow: 0 8px 40px rgba(0,0,0,0.4); }
+  .header { border-bottom: 3px double #1a2540; padding-bottom: 16px; margin-bottom: 32px; }
+  .eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #9a7c3f; margin-bottom: 6px; }
+  h1 { font-size: 28px; font-weight: 700; color: #1a2540; }
+  .student-selector { margin-bottom: 32px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .student-selector label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #999; }
+  #student-select { font-family: 'Cormorant Garamond', serif; font-size: 16px; border: 1px solid #c9bfae; padding: 8px 12px; background: #fdfaf4; color: #1a2540; outline: none; min-width: 200px; }
+  .btn { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; background: #1a2540; color: #f4f1eb; border: none; padding: 10px 20px; cursor: pointer; }
+  .btn:hover { background: #9a7c3f; }
+  .answers { display: flex; flex-direction: column; gap: 20px; }
+  .answer-block { border: 1px solid #c9bfae; overflow: hidden; }
+  .answer-label { background: #1a2540; color: #f4f1eb; padding: 8px 16px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; }
+  .answer-text { padding: 14px 16px; font-size: 16px; line-height: 1.7; color: #333; background: #fdfaf4; min-height: 40px; white-space: pre-wrap; }
+  .answer-text.empty { color: #bbb; font-style: italic; }
+  .no-data { font-size: 16px; font-style: italic; color: #aaa; text-align: center; padding: 40px; }
+  .refresh-note { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px; color: #aaa; margin-top: 24px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="eyebrow">Teacher View · Power Lesson</div>
+    <h1>Student Answers</h1>
+  </div>
+  <div class="student-selector">
+    <label>Select student</label>
+    <select id="student-select"><option value="">— loading —</option></select>
+    <button class="btn" onclick="loadAnswers()">Load Answers</button>
+  </div>
+  <div id="answers-container"><div class="no-data">Select a student above to view their answers.</div></div>
+  <div class="refresh-note">Answers save in real time as the student types.</div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const app = initializeApp({ databaseURL: "https://live-english-lessons-default-rtdb.asia-southeast1.firebasedatabase.app" });
+const db = getDatabase(app);
+
+const labels = {
+  hook_reaction: "Section 1 — Quote Reaction",
+  disc_1: "Section 3 — Discussion: CEO's indirect language",
+  disc_2: "Section 3 — Discussion: Two evasion moments",
+  disc_3: "Section 3 — Discussion: Effect of 'slovenly'",
+  grammar_1: "Section 4 — Grammar 01",
+  grammar_2: "Section 4 — Grammar 02",
+  grammar_3: "Section 4 — Grammar 03",
+  grammar_4: "Section 4 — Grammar 04 (own sentence)",
+  advice_1: "Section 4B — Give Advice 01 (travel)",
+  advice_2: "Section 4B — Give Advice 02 (fashion blogger)",
+  advice_3: "Section 4B — Give Advice 03 (therapy)",
+  rp_1: "Section 5 — Role Play: Journalist's question",
+  rp_2: "Section 5 — Role Play: CEO response",
+  rp_3: "Section 5 — Role Play: Reflection"
+};
+
+onValue(ref(db, 'lessons/power'), function(snapshot) {
+  const data = snapshot.val();
+  const select = document.getElementById('student-select');
+  select.innerHTML = '<option value="">— select —</option>';
+  if (data) {
+    Object.keys(data).forEach(function(name) {
+      const opt = document.createElement('option');
+      opt.value = name;
+      opt.textContent = name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+      select.appendChild(opt);
+    });
+  }
+});
+
+window.loadAnswers = function() {
+  const student = document.getElementById('student-select').value;
+  if (!student) return;
+  const container = document.getElementById('answers-container');
+  container.innerHTML = '<div class="no-data">Loading...</div>';
+  onValue(ref(db, 'lessons/power/' + student), function(snapshot) {
+    const data = snapshot.val();
+    container.innerHTML = '';
+    if (!data) {
+      container.innerHTML = '<div class="no-data">No answers saved yet.</div>';
+      return;
+    }
+    const answers = document.createElement('div');
+    answers.className = 'answers';
+    Object.keys(labels).forEach(function(key) {
+      const block = document.createElement('div');
+      block.className = 'answer-block';
+      const label = document.createElement('div');
+      label.className = 'answer-label';
+      label.textContent = labels[key];
+      const text = document.createElement('div');
+      text.className = 'answer-text' + (data[key] ? '' : ' empty');
+      text.textContent = data[key] || '(no answer yet)';
+      block.appendChild(label);
+      block.appendChild(text);
+      answers.appendChild(block);
+    });
+    container.appendChild(answers);
+  }, { onlyOnce: true });
+};
+</script>
+</body>
+</html>
