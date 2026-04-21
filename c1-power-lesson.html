@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="light only">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Language of Power — C1 Lesson</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light only;
+    --ink: #0d1117;
+    --paper: #f4f1eb;
+    --gold: #9a7c3f;
+    --gold-light: #c9a84c;
+    --rule: #c8bfa8;
+    --soft: #e8e2d6;
+    --answer-bg: #fdfaf4;
+    --correct: #2c5f4a;
+    --wrong: #8b3a2a;
+    --navy: #1a2540;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  @media (prefers-color-scheme: dark) {
+    html { filter: invert(0) !important; background: #e8e2d9 !important; }
+    body { background: #e8e2d9 !important; color: #1c1a18 !important; }
+    .page { background: #f7f3ec !important; color: #1c1a18 !important; }
+    .interview-card, .interview-body, .speech { background: #f7f3ec !important; color: #333 !important; }
+  }
+
+  body {
+    background: #e8e2d9;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    box-shadow: 0 12px 60px rgba(0,0,0,0.4);
+    padding: 52px 60px 64px;
+  }
+
+  /* MASTER HEADER */
+  .master-header {
+    text-align: center;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 14px;
+    margin-bottom: 32px;
+    position: relative;
+  }
+
+  .master-header::after {
+    content: '';
+    display: block;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin-top: 12px;
+  }
+
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  .master-header h1 {
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    color: var(--navy);
+  }
+
+  .master-header .sub {
+    font-size: 15px;
+    font-style: italic;
+    color: #777;
+    margin-top: 6px;
+  }
+
+  /* SECTION */
+  .section { margin-bottom: 52px; }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 5px;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    border-bottom: 2px solid var(--navy);
+    padding-bottom: 8px;
+    margin-bottom: 4px;
+    color: var(--navy);
+  }
+
+  .section-intro {
+    font-size: 15px;
+    font-style: italic;
+    color: #666;
+    margin: 10px 0 22px;
+    line-height: 1.7;
+  }
+
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 48px 0;
+  }
+
+  /* RULE BOX */
+  .rule-box {
+    background: var(--soft);
+    border-left: 3px solid var(--gold);
+    padding: 14px 20px;
+    margin-bottom: 28px;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .rule-box strong { color: var(--navy); font-weight: 600; }
+  .rule-box em { color: #555; }
+
+  /* HOOK */
+  .hook-card {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 36px 40px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hook-card::before {
+    content: '\201C';
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    font-size: 120px;
+    color: var(--gold);
+    opacity: 0.15;
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+
+  .hook-quote {
+    font-size: 22px;
+    font-style: italic;
+    line-height: 1.6;
+    color: #f0ead8;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hook-attribution {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-top: 16px;
+  }
+
+  .hook-questions {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  .hook-q {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .hook-q-text {
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: #444;
+  }
+
+  .hook-input {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 16px;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--rule);
+    padding: 6px 2px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .hook-input:focus { border-bottom-color: var(--gold); }
+
+  /* VOCABULARY */
+  .vocab-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .vocab-card {
+    border: 1px solid var(--rule);
+    overflow: hidden;
+  }
+
+  .vocab-top {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 0;
+  }
+
+  .vocab-word-col {
+    background: var(--ink);
+    padding: 14px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .vocab-word {
+    font-size: 20px;
+    font-weight: 700;
+    color: #f0ead8;
+    letter-spacing: 0.3px;
+  }
+
+  .vocab-pos {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+  }
+
+  .vocab-right {
+    padding: 14px 18px;
+    background: var(--answer-bg);
+    border-left: 1px solid var(--rule);
+  }
+
+  .vocab-def {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 6px;
+  }
+
+  .vocab-example {
+    font-size: 14px;
+    font-style: italic;
+    color: #777;
+    border-left: 2px solid var(--gold);
+    padding-left: 10px;
+  }
+
+  .vocab-bottom {
+    border-top: 1px solid var(--rule);
+    padding: 10px 18px;
+    background: var(--paper);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .vocab-task-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #aaa;
+  }
+
+  .vocab-task-input {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 15px;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--rule);
+    padding: 5px 2px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .vocab-task-input:focus { border-bottom-color: var(--gold); }
+
+  /* HIGHLIGHT — SLOVENLY */
+  .vocab-card.highlight .vocab-word-col {
+    background: var(--gold);
+  }
+  .vocab-card.highlight .vocab-word { color: var(--navy); }
+  .vocab-card.highlight .vocab-pos { color: var(--navy); opacity: 0.7; }
+
+  /* READING */
+  .interview-card {
+    border: 1px solid var(--rule);
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .interview-header {
+    background: var(--rule);
+    color: var(--paper);
+    padding: 10px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .interview-header span { color: var(--gold-light); }
+
+  .interview-body {
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .interview-line {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+
+  .speaker {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding-top: 3px;
+  }
+
+  .speaker.q { color: var(--gold); }
+  .speaker.a { color: var(--ink); }
+
+  .speech {
+    font-size: 15.5px;
+    line-height: 1.75;
+    color: #333;
+  }
+
+  .speech .highlight-word {
+    background: #fff3cd;
+    padding: 1px 3px;
+    border-bottom: 2px solid var(--gold);
+    cursor: pointer;
+  }
+
+  .discussion-qs {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .disc-q {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .disc-q-text {
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: #333;
+  }
+
+  .disc-q-input {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 15px;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--rule);
+    padding: 6px 2px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s;
+    resize: none;
+    min-height: 40px;
+  }
+  .disc-q-input:focus { border-bottom-color: var(--gold); }
+
+  /* GRAMMAR */
+  .grammar-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+    font-size: 15px;
+  }
+
+  .grammar-table th {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: left;
+    font-weight: 400;
+  }
+
+  .grammar-table td {
+    padding: 12px 14px;
+    border: 1px solid var(--rule);
+    vertical-align: top;
+    line-height: 1.65;
+  }
+
+  .grammar-table tr:nth-child(odd) td { background: var(--answer-bg); }
+  .grammar-table tr:nth-child(even) td { background: var(--paper); }
+
+  .grammar-table .structure {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+  }
+
+  .grammar-table .meaning {
+    font-style: italic;
+    color: #666;
+    font-size: 14px;
+  }
+
+  .grammar-table .example {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .grammar-items {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    margin-bottom: 20px;
+  }
+
+  .grammar-item { display: flex; flex-direction: column; gap: 7px; }
+
+  .g-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+
+  .g-sentence {
+    font-size: 16px;
+    line-height: 1.6;
+    padding: 10px 14px;
+    background: var(--answer-bg);
+    border: 1px solid var(--rule);
+    color: #444;
+    font-style: italic;
+  }
+
+  .g-prompt {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #aaa;
+  }
+
+  .g-input {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 16px;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--rule);
+    padding: 7px 2px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .g-input:focus { border-bottom-color: var(--gold); }
+
+  .g-feedback {
+    font-size: 13px;
+    font-style: italic;
+    display: none;
+    margin-top: 2px;
+  }
+  .g-feedback.correct { color: var(--correct); display: block; }
+  .g-feedback.wrong { color: var(--wrong); display: block; }
+
+  /* ROLE PLAY */
+  .roleplay-card {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 28px 32px;
+    margin-bottom: 24px;
+  }
+
+  .roleplay-scenario {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #d8d0be;
+    margin-bottom: 20px;
+    border-left: 3px solid var(--gold);
+    padding-left: 16px;
+  }
+
+  .roleplay-roles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .role-box {
+    border: 1px solid rgba(200,180,140,0.3);
+    padding: 14px 16px;
+  }
+
+  .role-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 8px;
+  }
+
+  .role-desc {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #c8c0ae;
+  }
+
+  .roleplay-tasks {
+    margin-top: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .rp-task {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .rp-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #999;
+  }
+
+  .rp-prompt {
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: #444;
+    padding: 10px 14px;
+    background: var(--answer-bg);
+    border: 1px solid var(--rule);
+    font-style: italic;
+  }
+
+  .rp-input {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 16px;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--rule);
+    padding: 7px 2px;
+    width: 100%;
+    outline: none;
+    resize: none;
+    min-height: 52px;
+    line-height: 1.6;
+    transition: border-color 0.2s;
+  }
+  .rp-input:focus { border-bottom-color: var(--gold); }
+
+  /* CHECK ROW */
+  .check-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .btn-check {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 12px 28px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-check:hover { background: var(--gold); color: var(--navy); }
+
+  .btn-reset {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: transparent;
+    color: #999;
+    border: 1px solid var(--rule);
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .btn-reset:hover { color: var(--ink); border-color: var(--ink); }
+
+  .score {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 1px;
+    display: none;
+  }
+
+  /* HOMEWORK */
+  .hw-brief {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 24px 28px;
+    margin-bottom: 22px;
+  }
+
+  .hw-brief-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 10px;
+  }
+
+  .hw-brief-text {
+    font-size: 17px;
+    font-style: italic;
+    line-height: 1.75;
+    color: #e8e0ce;
+  }
+
+  .hw-requirements {
+    background: var(--answer-bg);
+    border: 1px solid var(--rule);
+    padding: 18px 22px;
+    margin-bottom: 22px;
+  }
+
+  .hw-req-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 10px;
+  }
+
+  .hw-req-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding-left: 4px;
+  }
+
+  .hw-req-list li {
+    font-size: 15px;
+    line-height: 1.6;
+    padding-left: 16px;
+    position: relative;
+    color: #333;
+  }
+
+  .hw-req-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+  }
+
+  .hw-req-list li strong { color: var(--navy); }
+
+  .hw-write-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 8px;
+  }
+
+  .hw-textarea {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 16px;
+    color: var(--ink);
+    background: var(--answer-bg);
+    border: 1px solid var(--rule);
+    padding: 16px 18px;
+    width: 100%;
+    outline: none;
+    resize: vertical;
+    min-height: 260px;
+    line-height: 1.8;
+    transition: border-color 0.2s;
+  }
+  .hw-textarea:focus { border-color: var(--gold); }
+
+  .hw-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    margin-bottom: 22px;
+  }
+
+  .word-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #999;
+  }
+
+  .word-target {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--gold);
+  }
+
+  /* CHECKLIST */
+  .checklist-wrap {
+    border: 1px solid var(--rule);
+    padding: 20px 22px 18px;
+    background: var(--answer-bg);
+  }
+
+  .checklist-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--navy);
+  }
+
+  .checklist-intro {
+    font-size: 14px;
+    font-style: italic;
+    color: #777;
+    margin-bottom: 16px;
+  }
+
+  .checklist-items { display: flex; flex-direction: column; gap: 11px; }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+  }
+
+  .check-item input[type="checkbox"] { display: none; }
+
+  .check-box {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border: 1.5px solid var(--rule);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+    transition: all 0.15s;
+    font-size: 11px;
+    color: white;
+  }
+
+  .check-item input:checked + .check-box {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .check-item input:checked + .check-box::after { content: '✓'; }
+
+  .check-text { font-size: 15px; line-height: 1.6; color: #333; }
+
+  .check-item input:checked ~ .check-text {
+    color: #aaa;
+    text-decoration: line-through;
+    text-decoration-color: var(--gold);
+  }
+
+  .checklist-result {
+    margin-top: 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--gold);
+    min-height: 20px;
+  }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 40px;
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+  }
+  .footer span {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #bbb;
+  }
+</style>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  const firebaseConfig = { databaseURL: "https://live-english-lessons-default-rtdb.asia-southeast1.firebasedatabase.app" };
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  // Student name key — stored in session
+  function getStudent() {
+    return window._studentName || 'anonymous';
+  }
+
+  window.saveAnswer = function(key, value) {
+    const student = getStudent();
+    set(ref(db, 'lessons/power/' + student + '/' + key), value);
+  };
+
+  window.initStudent = function(name) {
+    window._studentName = name.trim().toLowerCase().replace(/\s+/g, '_');
+    document.getElementById('student-display').textContent = name;
+    document.getElementById('student-bar').style.display = 'none';
+    document.getElementById('lesson-content').style.display = 'block';
+    // Load any existing answers
+    onValue(ref(db, 'lessons/power/' + window._studentName), function(snapshot) {
+      const data = snapshot.val();
+      if (!data) return;
+      Object.keys(data).forEach(function(key) {
+        const el = document.getElementById(key);
+        if (!el) return;
+        if (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') {
+          el.value = data[key];
+        }
+      });
+    }, { onlyOnce: true });
+  };
+</script>
+</head>
+<body>
+<div id="student-bar" style="max-width:780px;margin:0 auto 0;background:#f7f3ec;border:1px solid #c9bfae;padding:32px 60px;box-shadow:0 8px 40px rgba(0,0,0,0.15);">
+  <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#9a7c3f;margin-bottom:10px;">Before you begin</div>
+  <div style="font-size:20px;font-family:'Cormorant Garamond',serif;font-weight:700;color:#1a2540;margin-bottom:16px;">Enter your name to save your answers</div>
+  <div style="display:flex;gap:12px;align-items:center;">
+    <input id="student-name-input" type="text" placeholder="Your name..." style="font-family:'Cormorant Garamond',serif;font-size:16px;border:none;border-bottom:2px solid #9a7c3f;padding:8px 4px;outline:none;background:transparent;min-width:220px;"/>
+    <button onclick="initStudent(document.getElementById('student-name-input').value)" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;background:#1a2540;color:#f4f1eb;border:none;padding:12px 24px;cursor:pointer;">Start</button>
+  </div>
+</div>
+<div id="lesson-content" style="display:none;">
+<div class="page">
+<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#9a7c3f;text-align:right;margin-bottom:-20px;padding-right:4px;">Student: <span id="student-display"></span></div>
+
+  <!-- MASTER HEADER -->
+  <div class="master-header">
+    <div class="eyebrow">The Language of Power</div>
+    <h1>What Money Sounds Like</h1>
+  </div>
+
+  <!-- ══ SECTION 1: HOOK ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-label">Section 1</div>
+    </div>
+    <div class="section-title">The Quote</div>
+    <div class="section-intro">Read this slowly. Don't rush past it.</div>
+
+    <div class="hook-card">
+      <div class="hook-quote">"I have always believed that it is possible to be both ruthless and elegant. The slovenly rich embarrass me far more than the poor ever could."</div>
+      <div class="hook-attribution">— attributed to Coco Chanel</div>
+    </div>
+  </div>
+
+  <hr class="section-divider"/>
+
+  <!-- ══ SECTION 3: READING ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-label">Section 3</div>
+    </div>
+    <div class="section-title">The Interview</div>
+    <div class="section-intro">Tap a word from the bank — it highlights. Then tap the gap where it belongs.</div>
+
+    <div class="word-bank">
+      <div class="wb-label">Word bank</div>
+      <div class="wb-chips" id="wb-chips">
+        <button class="wb-chip" onclick="selectWord(this)" data-word="due note">due note</button>
+        <button class="wb-chip" onclick="selectWord(this)" data-word="remuneration">remuneration</button>
+        <button class="wb-chip" onclick="selectWord(this)" data-word="impunity">impunity</button>
+        <button class="wb-chip" onclick="selectWord(this)" data-word="opacity">opacity</button>
+        <button class="wb-chip" onclick="selectWord(this)" data-word="patronising">patronising</button>
+        <button class="wb-chip" onclick="selectWord(this)" data-word="slovenly">slovenly</button>
+        <button class="wb-chip" onclick="selectWord(this)" data-word="leveraged">leveraged</button>
+      </div>
+    </div>
+
+    <div class="interview-card">
+      <div class="interview-header">Fictional interview — <em>Capital</em> Magazine</div>
+      <div class="interview-body">
+
+        <div class="interview-line">
+          <div class="speaker q">Journalist</div>
+          <div class="speech">Your factories in Vietnam were cited last year for below-minimum-wage violations. How do you respond to that?</div>
+        </div>
+
+        <div class="interview-line">
+          <div class="speaker a">CEO</div>
+          <div class="speech">We take <button class="gap" data-answer="due note" onclick="fillGap(this)">_______</button> of all third-party assessments. I can say with confidence that our <button class="gap" data-answer="remuneration" onclick="fillGap(this)">_______</button> frameworks are under continuous review. We are not a company that acts with <button class="gap" data-answer="impunity" onclick="fillGap(this)">_______</button>.</div>
+        </div>
+
+        <div class="interview-line">
+          <div class="speaker q">Journalist</div>
+          <div class="speech">But workers told investigators they earned less than $80 a month. That's a fact on record.</div>
+        </div>
+
+        <div class="interview-line">
+          <div class="speaker a">CEO</div>
+          <div class="speech">I wouldn't want to comment on figures taken out of context. What I will say is that our <button class="gap" data-answer="opacity" onclick="fillGap(this)">_______</button> on certain operational details is a matter of commercial sensitivity. One would hope that distinction is understood.</div>
+        </div>
+
+        <div class="interview-line">
+          <div class="speaker q">Journalist</div>
+          <div class="speech">Some critics say that language like "frameworks under review" is simply <button class="gap" data-answer="patronising" onclick="fillGap(this)">_______</button> to the people affected.</div>
+        </div>
+
+        <div class="interview-line">
+          <div class="speaker a">CEO</div>
+          <div class="speech">I think that characterisation is — with respect — rather <button class="gap" data-answer="slovenly" onclick="fillGap(this)">_______</button>. We have <button class="gap" data-answer="leveraged" onclick="fillGap(this)">_______</button> significant investment in supply chain reform.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="check-row">
+      <button class="btn-check" onclick="checkGaps()">Check</button>
+      <button class="btn-reset" onclick="resetGaps()">Reset</button>
+      <div class="score" id="gap-score"></div>
+    </div>
+
+    <div class="section-intro" style="margin-top:24px;">Discuss — find two moments where the CEO avoids answering directly. What does he say instead?</div>
+  </div>
+
+  <hr class="section-divider"/>
+
+  <!-- ══ SECTION 4: GRAMMAR ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-label">Section 4</div>
+    </div>
+    <div class="section-title">Mixed Conditionals</div>
+
+    <div class="rule-box">
+      Mixed conditionals combine time frames — a past condition with a present result, or a present condition with a past result.<br><br>
+      <strong>Type 1 — Past condition → Present result:</strong><br>
+      <em>If he had built his empire differently, he wouldn't be so exposed to scrutiny now.</em><br>
+      Structure: <strong>If + past perfect → would + infinitive</strong><br><br>
+      <strong>Type 2 — Present condition → Past result:</strong><br>
+      <em>If she weren't so ruthless, she would never have reached this position.</em><br>
+      Structure: <strong>If + past simple → would have + past participle</strong>
+    </div>
+
+    <div class="section-intro">Complete each sentence in your own words. There is no single correct answer — focus on the structure.</div>
+
+    <div class="grammar-items">
+
+      <div class="grammar-item">
+        <div class="g-num">01</div>
+        <div class="g-sentence">He never acknowledged the workers' conditions publicly...</div>
+        <div class="g-prompt">Past condition → present result &nbsp;·&nbsp; If he had acknowledged...</div>
+        <input class="g-input" id="g1" oninput="saveAnswer('grammar_1', this.value)" placeholder="If he had acknowledged this, he would..." autocomplete="off" spellcheck="false"/>
+      </div>
+
+      <div class="grammar-item">
+        <div class="g-num">02</div>
+        <div class="g-sentence">She is completely indifferent to public opinion...</div>
+        <div class="g-prompt">Present condition → past result &nbsp;·&nbsp; If she weren't...</div>
+        <input class="g-input" id="g2" oninput="saveAnswer('grammar_2', this.value)" placeholder="If she weren't so indifferent, she would never have..." autocomplete="off" spellcheck="false"/>
+      </div>
+
+      <div class="grammar-item">
+        <div class="g-num">03</div>
+        <div class="g-sentence">The company chose opacity over transparency from the beginning...</div>
+        <div class="g-prompt">Past condition → present result &nbsp;·&nbsp; If they had chosen...</div>
+        <input class="g-input" id="g3" oninput="saveAnswer('grammar_3', this.value)" placeholder="If they had chosen transparency..." autocomplete="off" spellcheck="false"/>
+      </div>
+
+      <div class="grammar-item">
+        <div class="g-num">04</div>
+        <div class="g-sentence">Write your own — about any powerful person or institution, real or fictional.</div>
+        <div class="g-prompt">Your choice of type — write which one you used</div>
+        <input class="g-input" id="g4" oninput="saveAnswer('grammar_4', this.value)" placeholder="If..." autocomplete="off" spellcheck="false"/>
+      </div>
+
+    </div>
+
+    <div class="check-row">
+      <button class="btn-check" onclick="checkGrammar()">Check</button>
+      <button class="btn-reset" onclick="resetGrammar()">Reset</button>
+      <div class="score" id="g-score"></div>
+    </div>
+  </div>
+
+  <hr class="section-divider"/>
+
+  <!-- ══ SECTION 4B: COMBINED TASK ══ -->
+  <div class="section">
+    <div class="section-label">Section 4B</div>
+    <div class="section-title">Give Advice</div>
+    <div class="section-intro">Read each situation. Give advice or suggest a solution using a mixed conditional and at least one word from the interview vocabulary.</div>
+
+    <div class="grammar-items">
+
+      <div class="grammar-item">
+        <div class="g-num">01</div>
+        <div class="g-sentence">Your friend has just returned from a solo trip abroad. She booked everything through a small agency she found online, paid in full upfront, and didn't take out travel insurance. The agency is now unreachable.</div>
+        <div class="g-prompt">What would you tell her now — and what should she have done differently?</div>
+        <input class="g-input" id="adv1" oninput="saveAnswer('advice_1', this.value)" placeholder="If you had... you wouldn't be..." autocomplete="off" spellcheck="false"/>
+      </div>
+
+      <div class="grammar-item">
+        <div class="g-num">02</div>
+        <div class="g-sentence">A fashion blogger you follow has been promoting a brand for months with complete deference — never questioning their opacity about production. She's just found out the brand acts with impunity on labour conditions. She feels embarrassed and doesn't know what to say to her audience.</div>
+        <div class="g-prompt">Give her advice — and reflect on what a different approach would have meant for her now.</div>
+        <input class="g-input" id="adv2" oninput="saveAnswer('advice_2', this.value)" placeholder="If she weren't so... / If she had questioned..." autocomplete="off" spellcheck="false"/>
+      </div>
+
+      <div class="grammar-item">
+        <div class="g-num">03</div>
+        <div class="g-sentence">A friend is considering therapy but keeps dismissing it in a slovenly way — "I'll be fine", "it's not for people like me." She's been saying this for two years.</div>
+        <div class="g-prompt">What would you say to her — and how might things be different if she had started sooner?</div>
+        <input class="g-input" id="adv3" oninput="saveAnswer('advice_3', this.value)" placeholder="If she had started... she would now..." autocomplete="off" spellcheck="false"/>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="section-divider"/>
+
+  <!-- ══ SECTION 5: ROLE PLAY ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-label">Section 5</div>
+    </div>
+    <div class="section-title">The Boardroom</div>
+    <div class="section-intro">Prepare your lines before speaking. This is a confrontational interview — both sides have something to protect.</div>
+
+    <div class="roleplay-card">
+      <div class="roleplay-scenario">
+        A major fashion house has just been exposed for paying garment workers $80/month while its CEO took home a €12 million remuneration package last year. You are in a live television interview. The camera is on.
+      </div>
+      <div class="roleplay-roles">
+        <div class="role-box">
+          <div class="role-title">Role A — The Journalist</div>
+          <div class="role-desc">You have the documents. You have the figures. Your job is to get a real answer — not a framework. Push back on every deflection. Don't let evasion go unchallenged.</div>
+        </div>
+        <div class="role-box">
+          <div class="role-title">Role B — The CEO</div>
+          <div class="role-desc">You are not lying — you are managing perception. Use the vocabulary from today. Be polished. Be cold. Never lose composure. Never give a direct number.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="roleplay-tasks">
+
+      <div class="rp-task">
+        <div class="rp-label">Prepare — Journalist's opening question</div>
+        <div class="rp-prompt">Write the sharpest possible opening question. It should be impossible to deflect cleanly.</div>
+        <textarea class="rp-input" id="rp_1" placeholder="Your opening question..." oninput="saveAnswer('rp_1', this.value)"></textarea>
+      </div>
+
+      <div class="rp-task">
+        <div class="rp-label">Prepare — CEO's opening response</div>
+        <div class="rp-prompt">Write a response that acknowledges the question without answering it. Use at least one word from today's vocabulary.</div>
+        <textarea class="rp-input" id="rp_2" placeholder="CEO response..." oninput="saveAnswer('rp_2', this.value)"></textarea>
+      </div>
+
+      <div class="rp-task">
+        <div class="rp-label">After the role play — reflection</div>
+        <div class="rp-prompt">Which role was harder to play — and why? Write 2–3 sentences using a mixed conditional somewhere in your answer.</div>
+        <textarea class="rp-input" id="rp_3" placeholder="I found... harder because... If I had..." oninput="saveAnswer('rp_3', this.value)"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="section-divider"/>
+
+  <!-- ══ SECTION 6: HOMEWORK ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-label">Homework</div>
+    </div>
+    <div class="section-title">Profile Piece</div>
+
+    <div class="hw-brief">
+      <div class="hw-brief-label">Your assignment from the editor</div>
+      <div class="hw-brief-text">"Write a short profile of a powerful person — real or fictional — who uses language to protect themselves from accountability. Don't be obvious. We don't want another piece about a CEO caught lying. We want something more interesting than that."</div>
+    </div>
+
+    <div class="hw-requirements">
+      <div class="hw-req-title">Requirements — 200–250 words</div>
+      <ul class="hw-req-list">
+        <li>Open with a specific scene or moment — not a biography</li>
+        <li>Use at least <strong>three words</strong> from today's vocabulary</li>
+        <li>Include at least <strong>one mixed conditional</strong></li>
+        <li>Show — don't tell — what makes this person powerful</li>
+        <li>End with a sentence that leaves something unsaid</li>
+      </ul>
+    </div>
+
+    <div class="form-link-wrap">
+      <p class="form-link-desc">Write your piece directly in Google Forms — it will be saved and visible to your teacher automatically.</p>
+      <a class="form-link-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScF4symUgiCHqm80B9TptD0Z10_x4VrRlyEzKygnzP9DbNrgw/viewform?usp=publish-editor" target="_blank">
+        Open Homework Form →
+      </a>
+    </div>
+  </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>What Money Sounds Like · C1 Advanced</span>
+    <span>Mixed Conditionals · The Language of Power</span>
+  </div>
+
+</div>
+
+<script>
+// ── WORD BANK TAP ──
+var currentWord = null;
+var currentChip = null;
+
+function selectWord(btn) {
+  if (currentChip === btn) {
+    btn.classList.remove('selected');
+    currentWord = null;
+    currentChip = null;
+    document.querySelectorAll('.gap').forEach(g => g.classList.remove('ready'));
+    return;
+  }
+  if (currentChip) currentChip.classList.remove('selected');
+  currentChip = btn;
+  currentWord = btn.getAttribute('data-word');
+  btn.classList.add('selected');
+  document.querySelectorAll('.gap').forEach(g => {
+    if (!g.getAttribute('data-filled')) g.classList.add('ready');
+  });
+}
+
+function fillGap(gap) {
+  if (!currentWord) {
+    if (gap.getAttribute('data-filled')) {
+      var old = gap.getAttribute('data-filled');
+      document.querySelectorAll('.wb-chip').forEach(c => {
+        if (c.getAttribute('data-word') === old) c.classList.remove('used');
+      });
+      gap.removeAttribute('data-filled');
+      gap.textContent = '_______';
+      gap.classList.remove('filled', 'correct', 'wrong');
+    }
+    return;
+  }
+  var existing = gap.getAttribute('data-filled');
+  if (existing) {
+    document.querySelectorAll('.wb-chip').forEach(c => {
+      if (c.getAttribute('data-word') === existing) c.classList.remove('used');
+    });
+  }
+  gap.setAttribute('data-filled', currentWord);
+  gap.textContent = currentWord;
+  gap.classList.add('filled');
+  gap.classList.remove('ready', 'correct', 'wrong');
+  currentChip.classList.add('used');
+  currentChip.classList.remove('selected');
+  currentWord = null;
+  currentChip = null;
+  document.querySelectorAll('.gap').forEach(g => g.classList.remove('ready'));
+}
+
+function checkGaps() {
+  var correct = 0;
+  document.querySelectorAll('.gap').forEach(function(gap) {
+    var filled = gap.getAttribute('data-filled');
+    var answer = gap.getAttribute('data-answer');
+    if (!filled) return;
+    if (filled === answer) {
+      gap.classList.add('correct');
+      gap.classList.remove('wrong');
+      correct++;
+    } else {
+      gap.classList.add('wrong');
+      gap.classList.remove('correct');
+    }
+  });
+  var s = document.getElementById('gap-score');
+  s.style.display = 'block';
+  s.textContent = correct + ' / 7 correct';
+}
+
+function resetGaps() {
+  document.querySelectorAll('.gap').forEach(function(gap) {
+    var word = gap.getAttribute('data-filled');
+    if (word) {
+      document.querySelectorAll('.wb-chip').forEach(function(c) {
+        if (c.getAttribute('data-word') === word) c.classList.remove('used');
+      });
+    }
+    gap.removeAttribute('data-filled');
+    gap.textContent = '_______';
+    gap.classList.remove('filled', 'correct', 'wrong', 'ready');
+  });
+  if (currentChip) currentChip.classList.remove('selected');
+  currentWord = null;
+  currentChip = null;
+  document.getElementById('gap-score').style.display = 'none';
+}
+
+// ── GRAMMAR CHECK ──
+function normalize(str) {
+  return str.toLowerCase().trim().replace(/[.,!?]/g, '').replace(/\s+/g, ' ');
+}
+
+function checkGrammar() {
+  var attempted = 0;
+  var structures = {
+    g1: ['if he had', "if he'd"],
+    g2: ["if she weren't", "if she wasn't", 'if she were not'],
+    g3: ['if they had', 'if the company had', 'if it had'],
+    g4: ['if']
+  };
+  for (var i = 1; i <= 4; i++) {
+    var input = document.getElementById('g' + i);
+    var fb = document.getElementById('gf' + i);
+    if (!input || !fb) continue;
+    var val = normalize(input.value);
+    var required = structures['g' + i];
+    var hasStructure = val.length > 20 && required.some(function(r) { return val.startsWith(normalize(r)); });
+    if (hasStructure) {
+      fb.textContent = '✓ Good structure — discuss with your teacher.';
+      fb.className = 'g-feedback correct';
+      input.style.borderBottomColor = '#2c5f4a';
+      attempted++;
+    } else if (val.length > 0) {
+      var hint = i < 4 ? 'Check the opening — ' + required[0] + '...' : 'Start with If...';
+      fb.textContent = '✗ ' + hint;
+      fb.className = 'g-feedback wrong';
+      input.style.borderBottomColor = '#8b3a2a';
+    } else {
+      fb.style.display = 'none';
+    }
+    fb.style.display = 'block';
+  }
+  var s = document.getElementById('g-score');
+  s.style.display = 'block';
+  s.textContent = attempted + ' / 4 attempted';
+}
+
+function resetGrammar() {
+  for (var i = 1; i <= 4; i++) {
+    var input = document.getElementById('g' + i);
+    var fb = document.getElementById('gf' + i);
+    if (!input) continue;
+    input.value = '';
+    if (fb) { fb.style.display = 'none'; fb.className = 'g-feedback'; }
+    input.style.borderBottomColor = '';
+  }
+  var s = document.getElementById('g-score');
+  if (s) s.style.display = 'none';
+}
+</script>
+</body>
+</html>
