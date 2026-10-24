@@ -1,0 +1,182 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Feed the Heroes</title><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body><title>Feed the Heroes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap">
+<style>
+/* Layout: one fixed 1280x720 notebook page, scaled to fit; Dot left, plate centre, Zed right */
+:root{
+  --paper:#FFF9EE; --rule:#E3EAF4; --margin:#F2B8B8; --ink:#1E1A2E;
+  --s:#8E6CF0; --t:#F08A5D; --yolk:#F6D08B; --ok:#86B46E;
+  --face:"Andika","Comic Sans MS",system-ui,sans-serif;
+  color-scheme:light;
+}
+html,body{height:100%}
+[hidden]{display:none!important}
+body{background:var(--paper);color:var(--ink);font-family:var(--face);margin:0;
+  padding-left:max(0px,env(safe-area-inset-left,0px));padding-right:max(0px,env(safe-area-inset-right,0px));
+  position:relative;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
+#fit{position:relative;width:1280px;height:720px;transform-origin:0 0}
+#stage{position:absolute;inset:0;background:var(--paper);
+  background-image:linear-gradient(90deg,transparent 108px,var(--margin) 108px,var(--margin) 111px,transparent 111px),
+  repeating-linear-gradient(var(--paper) 0 46px,var(--rule) 46px 48px);overflow:hidden}
+h1{position:absolute;left:0;right:0;top:22px;margin:0;text-align:center;font-size:58px;font-weight:700;letter-spacing:.5px}
+h1 .s{color:var(--s)} h1 .t{color:var(--t)}
+.hero{position:absolute;bottom:40px;width:340px;height:520px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  cursor:pointer;border-radius:40px;transition:background .2s}
+.hero:focus-visible{outline:5px dashed var(--ink);outline-offset:6px}
+.hero.hot{background:rgba(246,208,139,.45)}
+#dot{left:40px} #zed{right:40px}
+.hero .letter{width:170px;margin-bottom:6px;filter:drop-shadow(0 3px 0 rgba(30,26,46,.12))}
+.hero .body{width:300px}
+.hero.yum .body{animation:yum .7s ease}
+.hero.bleh .body{animation:bleh .6s ease}
+@keyframes yum{0%{transform:scale(1)}30%{transform:scale(1.12,.9)}60%{transform:scale(.95,1.08)}100%{transform:scale(1)}}
+@keyframes bleh{0%,100%{transform:translateX(0)}20%{transform:translateX(-18px) rotate(-5deg)}40%{transform:translateX(16px) rotate(4deg)}60%{transform:translateX(-10px)}80%{transform:translateX(6px)}}
+#plateZone{position:absolute;left:440px;top:150px;width:400px;height:400px}
+#plate{position:absolute;inset:40px 30px 30px;border-radius:50%;background:#fff;border:7px solid var(--ink);
+  box-shadow:inset 0 0 0 16px #fff,inset 0 0 0 22px var(--yolk)}
+#pic{position:absolute;left:50%;top:50%;width:240px;height:240px;margin:-125px 0 0 -120px;cursor:grab;touch-action:none;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+#pic.drag{transition:none;cursor:grabbing}
+#pic.pop{animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{from{transform:scale(0) rotate(-20deg)}to{transform:scale(1)}}
+#try{position:absolute;left:490px;top:96px;width:300px;z-index:6;text-align:center;font-size:44px;font-weight:700;color:var(--ink);background:#fff;border:6px solid var(--ink);border-radius:36px;padding:8px 0;box-shadow:0 7px 0 var(--ink);pointer-events:none}
+#try.show{animation:tryin .35s cubic-bezier(.3,1.6,.5,1)}
+@keyframes tryin{from{transform:scale(0) rotate(-8deg)}to{transform:scale(1)}}
+#hint{position:absolute;left:440px;width:400px;top:560px;text-align:center;font-size:30px}
+#hint .spk{display:inline-flex;align-items:center;gap:10px;border:4px solid var(--ink);border-radius:40px;padding:6px 22px;background:#fff;cursor:pointer;font:inherit;color:inherit}
+#hint .spk:focus-visible{outline:4px dashed var(--ink);outline-offset:4px}
+#dots{position:absolute;left:0;right:0;bottom:22px;display:flex;justify-content:center;gap:14px}
+#dots i{width:34px;height:34px;border-radius:50%;border:4px solid var(--ink);background:#fff;box-sizing:border-box;transition:background .3s,transform .3s}
+#dots i.done{background:var(--ok);transform:scale(1.15)}
+.overlay{position:absolute;inset:0;background:var(--paper);background-image:repeating-linear-gradient(var(--paper) 0 46px,var(--rule) 46px 48px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center}
+.overlay h2{margin:0;font-size:72px;line-height:1.05}
+.overlay p{margin:0;font-size:32px;max-width:900px}
+.big{font:inherit;font-size:44px;font-weight:700;color:var(--ink);background:var(--yolk);border:6px solid var(--ink);border-radius:60px;padding:14px 60px;cursor:pointer;box-shadow:0 7px 0 var(--ink)}
+.big:active{transform:translateY(5px);box-shadow:0 2px 0 var(--ink)}
+.big:focus-visible{outline:5px dashed var(--ink);outline-offset:6px}
+.row{display:flex;align-items:flex-end;gap:30px}
+#end .row img.l{width:150px;animation:shine 1.2s ease-in-out infinite alternate}
+@keyframes shine{from{transform:rotate(-6deg) scale(1)}to{transform:rotate(6deg) scale(1.08)}}
+.fly{position:absolute;width:240px;height:240px;z-index:5;pointer-events:none;transition:transform .5s cubic-bezier(.5,0,.8,.4),opacity .5s}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div id="fit"><div id="stage">
+  <h1>Feed the heroes!</h1>
+  <div class="hero" id="dot" role="button" tabindex="0" aria-label="Feed Dot, the S hero">
+    <img class="letter" src="assets/Ss.png" alt="Ss">
+    <img class="body" src="assets/dot.gif" alt="Dot">
+  </div>
+  <div class="hero" id="zed" role="button" tabindex="0" aria-label="Feed Zed, the T hero">
+    <img class="letter" src="assets/Tt.png" alt="Tt">
+    <img class="body" src="assets/zed.gif" alt="Zed">
+  </div>
+  <div id="plateZone"><div id="plate"></div><img id="pic" src="assets/sun.png" alt="picture" draggable="false"></div>
+  <div id="try" hidden>Try again!</div>
+  <div id="hint"><button class="spk" id="spk" type="button" aria-label="Hear the word again">🔊 listen</button></div>
+  <div id="dots"></div>
+
+  <div class="overlay" id="start">
+    <div class="row"><img src="assets/dot.gif" alt="" style="width:260px"><img src="assets/zed.gif" alt="" style="width:260px"></div>
+    <h2><span style="color:var(--s)">S</span> for Dot, <span style="color:var(--t)">T</span> for Zed</h2>
+    <p>Listen to the word. Drag it to the right hero, or tap the hero.</p>
+    <button class="big" id="go" type="button">Play</button>
+  </div>
+
+  <div class="overlay" id="end" hidden>
+    <div class="row"><img class="l" src="assets/Ss.png" alt="Ss"><img src="assets/hooray.gif" alt="Dot and Zed jumping" style="width:560px"><img class="l" src="assets/Tt.png" alt="Tt"></div>
+    <h2>Zed can talk!</h2>
+    <button class="big" id="again" type="button">Play again</button>
+  </div>
+</div></div>
+
+<script>
+(function(){
+const ROUNDS=[["sun","s"],["ten","t"],["six","s"],["taxi","t"],["tomato","t"],["sub","s"],["tent","t"],["sad","s"]];
+const $=id=>document.getElementById(id);
+const fit=$("fit"),pic=$("pic"),dots=$("dots");
+let i=0,busy=false,current=null;
+
+function scale(){const s=Math.min(innerWidth/1280,innerHeight/720);
+  fit.style.transform=`scale(${s})`;fit.style.position="absolute";
+  fit.style.left=Math.max(0,(innerWidth-1280*s)/2)+"px";fit.style.top=Math.max(0,(innerHeight-720*s)/2)+"px";}
+addEventListener("resize",scale);scale();
+
+const cache={};
+function play(name){return new Promise(res=>{
+  if(current){current.pause();current.currentTime=0;}
+  const a=cache[name]||(cache[name]=new Audio("assets/"+name+".mp3"));
+  current=a;a.currentTime=0;a.onended=()=>res();a.onerror=()=>res();
+  const p=a.play();if(p&&p.catch)p.catch(()=>res());});}
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+
+ROUNDS.forEach(()=>dots.appendChild(document.createElement("i")));
+
+function show(){
+  const [w]=ROUNDS[i];
+  pic.style.visibility="hidden";pic.style.transition="none";pic.style.transform="";
+  const reveal=()=>{pic.onload=null;pic.style.visibility="visible";
+    pic.classList.remove("pop");void pic.offsetWidth;pic.classList.add("pop");
+    requestAnimationFrame(()=>{pic.style.transition="";});play(w);};
+  const next="assets/"+w+".png";
+  if(pic.getAttribute("src")===next){reveal();}else{pic.onload=reveal;pic.src=next;}
+  pic.alt=w;
+}
+async function feed(who){
+  if(busy)return;busy=true;
+  const [w,snd]=ROUNDS[i];const hero=$(who);
+  const right=(who==="dot"&&snd==="s")||(who==="zed"&&snd==="t");
+  if(right){
+    const r=hero.querySelector(".body").getBoundingClientRect(),p=$("plateZone").getBoundingClientRect();
+    const s=parseFloat(fit.style.transform.slice(6))||1;
+    pic.style.transition="transform .45s cubic-bezier(.5,0,.8,.4)";
+    pic.style.transform=`translate(${(r.left+r.width/2-(p.left+p.width/2))/s}px,${(r.top+r.height*0.45-(p.top+p.height/2))/s}px) scale(.15)`;
+    await wait(430);pic.style.visibility="hidden";pic.style.transition="none";pic.style.transform="scale(0)";
+    hero.classList.add("yum");await wait(750);hero.classList.remove("yum");
+    dots.children[i].classList.add("done");
+    i++;
+    if(i>=ROUNDS.length){await wait(300);finish();busy=false;return;}
+    await wait(250);show();
+  }else{
+    hero.classList.add("bleh");pic.style.transform="";
+    const tr=$("try");tr.hidden=false;tr.classList.remove("show");void tr.offsetWidth;tr.classList.add("show");
+    await wait(1300);hero.classList.remove("bleh");tr.hidden=true;
+  }
+  busy=false;
+}
+function finish(){$("end").hidden=false;play("zed_final");}
+
+// tap heroes
+["dot","zed"].forEach(id=>{const h=$(id);
+  h.addEventListener("click",()=>feed(id));
+  h.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();feed(id);}});});
+$("spk").addEventListener("click",()=>{if(!busy)play(ROUNDS[i][0]);});
+
+// drag the picture
+let drag=null;
+pic.addEventListener("pointerdown",e=>{if(busy)return;e.preventDefault();pic.setPointerCapture(e.pointerId);
+  const s=parseFloat(fit.style.transform.slice(6))||1;drag={x:e.clientX,y:e.clientY,s,moved:false};pic.classList.add("drag");});
+pic.addEventListener("pointermove",e=>{if(!drag)return;const dx=(e.clientX-drag.x)/drag.s,dy=(e.clientY-drag.y)/drag.s;
+  if(Math.hypot(dx,dy)>8)drag.moved=true;pic.style.transform=`translate(${dx}px,${dy}px) scale(.85)`;
+  ["dot","zed"].forEach(id=>$(id).classList.toggle("hot",hit(id,e)));});
+function hit(id,e){const r=$(id).getBoundingClientRect();return e.clientX>r.left&&e.clientX<r.right&&e.clientY>r.top&&e.clientY<r.bottom;}
+pic.addEventListener("pointerup",e=>{if(!drag)return;pic.classList.remove("drag");
+  ["dot","zed"].forEach(id=>$(id).classList.remove("hot"));
+  const moved=drag.moved;drag=null;
+  const target=["dot","zed"].find(id=>hit(id,e));
+  if(moved&&target){feed(target);}
+  else{pic.style.transform="";if(!moved)play(ROUNDS[i][0]);}});
+pic.addEventListener("pointercancel",()=>{drag=null;pic.classList.remove("drag");pic.style.transform="";});
+
+async function start(){
+  $("start").hidden=true;$("end").hidden=true;i=0;busy=true;
+  [...dots.children].forEach(d=>d.classList.remove("done"));
+  pic.style.transform="scale(0)";
+  await play("intro");busy=false;show();
+}
+$("go").addEventListener("click",start);
+$("again").addEventListener("click",start);
+})();
+</script>
+</body></html>
