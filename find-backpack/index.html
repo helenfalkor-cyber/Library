@@ -1,0 +1,147 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Find the Backpack</title><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body><title>Find the Backpack</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap">
+<style>
+/* Layout: one fixed 1280x720 notebook page scaled to fit; sea map with five food islands to lift */
+:root{
+  --paper:#FFF9EE; --rule:#E3EAF4; --margin:#F2B8B8; --ink:#1E1A2E;
+  --sea:#DCEFF4; --wave:#9CC7D6; --s:#8E6CF0; --t:#F08A5D; --yolk:#F6D08B;
+  --face:"Andika","Comic Sans MS",system-ui,sans-serif;
+  color-scheme:light;
+}
+html,body{height:100%}
+[hidden]{display:none!important}
+body{background:var(--paper);color:var(--ink);font-family:var(--face);margin:0;position:relative;overflow:hidden;
+  padding-left:max(0px,env(safe-area-inset-left,0px));padding-right:max(0px,env(safe-area-inset-right,0px));
+  touch-action:none;user-select:none;-webkit-user-select:none}
+#fit{position:absolute;width:1280px;height:720px;transform-origin:0 0}
+.page{position:absolute;inset:0;background:var(--paper);
+  background-image:linear-gradient(90deg,transparent 108px,var(--margin) 108px,var(--margin) 111px,transparent 111px),
+  repeating-linear-gradient(var(--paper) 0 46px,var(--rule) 46px 48px);overflow:hidden}
+h1{position:absolute;left:0;right:0;top:14px;margin:0;text-align:center;font-size:54px;font-weight:700}
+#sea{position:absolute;left:130px;top:96px;width:1110px;height:600px}
+.isl{position:absolute;width:250px;cursor:grab;touch-action:none;z-index:3;transition:transform .6s cubic-bezier(.3,1.3,.5,1),opacity .6s}
+.isl img{width:250px;display:block;pointer-events:none}
+.isl .lbl{text-align:center;font-size:26px;font-weight:700;margin-top:-10px;pointer-events:none}
+.isl.drag{transition:none;cursor:grabbing;z-index:6}
+.isl.gone{opacity:.28;pointer-events:none}
+.isl:focus-visible{outline:4px dashed var(--ink);outline-offset:4px;border-radius:20px}
+.find{position:absolute;width:150px;z-index:2;transform:scale(0);transition:transform .45s cubic-bezier(.3,1.7,.5,1);cursor:pointer}
+.find.on{transform:scale(1)}
+.find.bp{width:190px}
+.find.bp.on{animation:wig 1s ease-in-out infinite}
+@keyframes wig{0%,100%{transform:rotate(-6deg) scale(1)}50%{transform:rotate(6deg) scale(1.08)}}
+#heroes{position:absolute;left:-8px;bottom:-6px;width:330px;z-index:4;pointer-events:none}
+.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;z-index:10}
+.overlay h2{margin:0;font-size:68px;line-height:1.05}
+.overlay p{margin:0;font-size:30px;max-width:860px;line-height:1.35}
+.overlay p b{font-weight:700}
+.big{font:inherit;font-size:44px;font-weight:700;color:var(--ink);background:var(--yolk);border:6px solid var(--ink);border-radius:60px;padding:12px 60px;cursor:pointer;box-shadow:0 7px 0 var(--ink)}
+.big:active{transform:translateY(5px);box-shadow:0 2px 0 var(--ink)}
+.big:focus-visible{outline:5px dashed var(--ink);outline-offset:6px}
+#endrow{display:flex;align-items:flex-end;gap:10px}
+#endrow .l{width:130px;animation:pop .5s cubic-bezier(.3,1.7,.5,1) both}
+#endrow .l2{animation-delay:.25s}
+@keyframes pop{from{transform:scale(0) translateY(60px)}to{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div id="fit"><div class="page" id="game">
+  <h1>Where is the backpack?</h1>
+  <svg id="sea" viewBox="0 0 1110 600" aria-hidden="true">
+    <path d="M70 120 C 40 40, 200 10, 330 30 C 470 0, 620 30, 760 14 C 920 0, 1080 50, 1080 170 C 1100 300, 1060 420, 1000 500 C 920 590, 760 580, 620 570 C 470 600, 300 590, 190 560 C 60 520, 20 420, 40 300 C 50 220, 90 180, 70 120 Z" fill="var(--sea)" stroke="var(--ink)" stroke-width="5"/>
+    <g fill="none" stroke="var(--wave)" stroke-width="5" stroke-linecap="round">
+      <path d="M150 160 q15-12 30 0 t30 0"/><path d="M470 120 q15-12 30 0 t30 0"/><path d="M840 120 q15-12 30 0 t30 0"/>
+      <path d="M420 330 q15-12 30 0 t30 0"/><path d="M760 300 q15-12 30 0 t30 0"/><path d="M980 420 q15-12 30 0 t30 0"/>
+      <path d="M560 520 q15-12 30 0 t30 0"/><path d="M300 470 q15-12 30 0 t30 0"/>
+    </g>
+    <path d="M180 470 C 150 380, 200 330, 250 300 C 330 260, 360 360, 440 380 C 520 400, 520 230, 600 200 C 680 170, 700 330, 770 360 C 850 390, 860 200, 930 170" fill="none" stroke="var(--ink)" stroke-width="4" stroke-dasharray="14 14" stroke-linecap="round"/>
+  </svg>
+  <div id="board"></div>
+  <img id="heroes" src="assets/waving.gif" alt="Dot and Zed">
+
+  <div class="overlay page" id="start">
+    <div id="endrow"><img src="assets/waving.gif" alt="" style="width:380px"><span style="font-size:150px;font-weight:700;color:var(--t);line-height:1;padding-bottom:30px">?</span><img src="assets/backpack.png" alt="" style="width:130px;opacity:.35;padding-bottom:20px"></div>
+    <h2>Where is the backpack?</h2>
+    <p>Zed can talk again! Now Dot and Zed want to fly home, but they can't find their <b>backpack</b>.<br>
+       <b>Move the islands</b> on the map to look under them.</p>
+    <button class="big" id="go" type="button">Play</button>
+  </div>
+
+  <div class="overlay page" id="end" hidden>
+    <div id="endrow"><img class="l" src="assets/Ss.png" alt="Ss"><img src="assets/waving.gif" alt="Dot and Zed waving" style="width:480px"><img class="l l2" src="assets/backpack.png" alt="backpack" style="width:150px"><img class="l l2" src="assets/Tt.png" alt="Tt"></div>
+    <h2>See you soon!</h2>
+    <button class="big" id="again" type="button">Play again</button>
+  </div>
+</div></div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const fit=$("fit"),board=$("board");
+function scale(){const s=Math.min(innerWidth/1280,innerHeight/720);fit.style.transform=`scale(${s})`;
+  fit.style.left=Math.max(0,(innerWidth-1280*s)/2)+"px";fit.style.top=Math.max(0,(innerHeight-720*s)/2)+"px";}
+addEventListener("resize",scale);scale();
+
+// island centres follow the dashed route: Pizza Peak → Cupcake Cove → Ice Cream Hill → Melon Beach → Sunny Egg
+const ISL=[["pizza","Pizza Peak",380,390],["cupcake","Cupcake Cove",570,500],["icecream","Ice Cream Hill",730,270],["melon","Melon Beach",930,470],["egg","Sunny Egg",1070,250]];
+const S=["sun","six","sub","sad"],T=["ten","tomato","tent","taxi"];
+const cache={};let cur=null;
+function play(n){return new Promise(r=>{if(cur){cur.pause();cur.currentTime=0;}
+  const a=cache[n]||(cache[n]=new Audio("assets/"+n+".mp3"));cur=a;a.currentTime=0;a.onended=r;a.onerror=r;
+  const p=a.play();if(p&&p.catch)p.catch(r);});}
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const pick=a=>a.splice(Math.floor(Math.random()*a.length),1)[0];
+let lifted=0,words=[],done=false;
+
+function build(){
+  board.innerHTML="";lifted=0;done=false;
+  const s=[...S],t=[...T];words=[pick(s),pick(t),pick(s),pick(t)].sort(()=>Math.random()-.5);
+  ISL.forEach(([id,name,x,y])=>{
+    const f=document.createElement("img");f.className="find";f.style.left=(x-75)+"px";f.style.top=(y-50)+"px";f.alt="";board.appendChild(f);
+    const d=document.createElement("div");d.className="isl";d.tabIndex=0;d.setAttribute("role","button");d.setAttribute("aria-label","Move "+name);
+    d.style.left=(x-125)+"px";d.style.top=(y-150)+"px";
+    d.innerHTML=`<img src="assets/isl_${id}.png" alt=""><div class="lbl">${name}</div>`;
+    board.appendChild(d);d._find=f;wire(d);
+  });
+}
+function lift(d,dx,dy){
+  if(d.classList.contains("gone"))return;
+  const len=Math.hypot(dx,dy)||1;const k=170/len;
+  d.classList.remove("drag");d.style.transform=`translate(${dx*k}px,${dy*k}px) rotate(${dx>0?8:-8}deg) scale(.8)`;d.classList.add("gone");
+  lifted++;const f=d._find;
+  if(lifted===ISL.length){
+    f.src="assets/backpack.png";f.classList.add("bp");f.style.left=(parseFloat(f.style.left)-20)+"px";f.style.top=(parseFloat(f.style.top)-30)+"px";
+    requestAnimationFrame(()=>f.classList.add("on"));
+    f.onclick=null;finish();
+  }else{
+    const w=words[lifted-1];f.src="assets/"+w+".png";f.alt=w;
+    requestAnimationFrame(()=>f.classList.add("on"));play(w);f.onclick=()=>play(w);
+  }
+}
+function wire(d){
+  let st=null;
+  d.addEventListener("pointerdown",e=>{if(done||d.classList.contains("gone"))return;e.preventDefault();d.setPointerCapture(e.pointerId);
+    const s=parseFloat(fit.style.transform.slice(6))||1;st={x:e.clientX,y:e.clientY,s,dx:0,dy:0};d.classList.add("drag");});
+  d.addEventListener("pointermove",e=>{if(!st)return;st.dx=(e.clientX-st.x)/st.s;st.dy=(e.clientY-st.y)/st.s;
+    d.style.transform=`translate(${st.dx}px,${st.dy}px)`;});
+  d.addEventListener("pointerup",()=>{if(!st)return;const {dx,dy}=st;st=null;
+    if(Math.hypot(dx,dy)>12)lift(d,dx,dy);else lift(d,60,90);});
+  d.addEventListener("pointercancel",()=>{st=null;d.classList.remove("drag");d.style.transform="";});
+  d.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();lift(d,60,90);}});
+}
+async function finish(){
+  done=true;await play("found");await wait(900);
+  $("end").hidden=false;play("bye");
+}
+async function start(){
+  $("start").hidden=true;$("end").hidden=true;build();
+  await play("intro");
+}
+$("go").addEventListener("click",start);
+$("again").addEventListener("click",start);
+build();
+})();
+</script>
+</body></html>
